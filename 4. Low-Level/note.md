@@ -25,6 +25,32 @@
 1. Установите набор инструментов. [Подробности здесь](https://www.wellys.com/posts/avr_c_setup/)
 2. Если вы используете Linux и хотите попробовать аппаратную отладку, рассмотрите возможность [использования Bloom, avr-gdb и отладчика](https://www.wellys.com/posts/avr_c_gdb_bloomsetup/).
 
+
+```c++
+#include <avr/io.h>
+
+#define F_CPU 16000000
+#define BLINK_DELAY_MS 250
+
+#include <util/delay.h>
+
+int main (void)
+{
+  // Arduino digital pin 13 (pin 5 of PORTB) for output
+  DDRB |= 0B100000; // PORTB5
+  
+  while(1) {
+    // turn LED on
+    PORTB |= 0B100000; // PORTB5
+    _delay_ms(BLINK_DELAY_MS);
+    
+    // turn LED off
+    PORTB &= ~ 0B100000; // PORTB5
+    _delay_ms(BLINK_DELAY_MS);
+  }
+}
+```
+
 ## Источники
 - [Datasheet](https://docs.arduino.cc/resources/datasheets/ATmega328P-datasheet.pdf) 
 - [Standard AVR C](http://avr-libc.nongnu.org)
