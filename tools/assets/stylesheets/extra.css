@@ -1,0 +1,73 @@
+/* Дополнительные стили курса "Программирование микроконтроллеров" */
+
+:root {
+  --md-code-font: "JetBrains Mono", "Fira Code", "Courier New", monospace;
+}
+
+/* Таблицы курса плотные и часто широкие: даём им прокрутку,
+   чтобы страница не разъезжалась по горизонтали на телефоне. */
+.md-typeset__table {
+  min-width: 100%;
+}
+
+.md-typeset table:not([class]) {
+  font-size: 0.72rem;
+}
+
+.md-typeset table:not([class]) th {
+  white-space: nowrap;
+}
+
+/* ASCII-схемы (осциллограммы, распиновки, диаграммы времени)
+   должны сохранять выравнивание и не переноситься. */
+.md-typeset pre > code {
+  white-space: pre;
+}
+
+/* Предупреждения по технике безопасности заметны в тексте */
+.md-typeset blockquote {
+  border-left: 0.2rem solid var(--md-accent-fg-color);
+}
+
+/* Нумерация вопросов в длинных списках экзамена */
+.md-typeset ol > li {
+  margin-bottom: 0.3em;
+}
+
+/* Формулы MathJax не должны обрезаться на узком экране */
+mjx-container[jax="CHTML"][display="true"] {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.2rem 0;
+}
+
+/* --- Схемы TikZ ------------------------------------------------------- */
+
+.tikz-figure {
+  margin: 1.4em auto;
+  text-align: center;
+  overflow-x: auto;
+}
+
+/* currentColor подставлен в SVG при рендеринге: схема принимает
+   цвет текста и остаётся читаемой в обеих темах */
+.tikz-figure svg.tikz {
+  display: block;
+  margin: 0 auto;
+  color: var(--md-default-fg-color);
+}
+
+.tikz-figure figcaption {
+  margin-top: 0.6em;
+  font-size: 0.75rem;
+  color: var(--md-default-fg-color--light);
+  font-style: italic;
+}
+
+.tikz-missing {
+  border: 2px dashed var(--md-typeset-del-color);
+  padding: 1em;
+  text-align: center;
+  color: var(--md-default-fg-color--light);
+  border-radius: 0.2rem;
+}

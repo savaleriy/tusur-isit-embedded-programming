@@ -1,0 +1,163 @@
+% Библиотека стилей для схем курса "Программирование микроконтроллеров"
+%
+% Подключается автоматически ко всем блокам ```tikz (см. tools/tikz.py),
+% поэтому в самих конспектах достаточно писать имена стилей.
+%
+% Идея та же, что у opentikz: не рисовать каждую схему с нуля, а собирать
+% её из готовых узлов с единым оформлением. Но набор здесь свой - под
+% встраиваемые системы, а не под статьи по машинному обучению.
+%
+% ЦВЕТА (объявлены в tools/tikz.py):
+%   sig   - сигнал, данные          clk   - тактирование, инструменты
+%   acc   - акцент, результат       ok    - норма, успех
+%   warn  - опасность, ошибка       muted - служебное, второстепенное
+%
+% УЗЛЫ
+%   artifact  файл или данные (исходник, .hex, кадр)
+%   tool      инструмент или программа (компилятор, загрузчик)
+%   mcu       микроконтроллер, с выводами по бокам
+%   device    периферийное устройство, датчик, модуль
+%   host      компьютер, монитор порта
+%   memory    область памяти
+%   note      поясняющая подпись без рамки
+%
+% СВЯЗИ
+%   flow      основная стрелка потока
+%   back      обратная связь (штриховая)
+%   weak      второстепенная связь
+%   lab       подпись на стрелке
+%
+% ГРУППЫ
+%   stage     фоновая рамка вокруг этапа (с fit)
+
+\tikzset{  % ---------- базовый узел ----------
+  cnode/.style={
+    draw, semithick, rounded corners=2pt,
+    minimum height=9mm, minimum width=17mm,
+    inner xsep=3mm, inner ysep=1.6mm,
+    align=center, font=\small,
+  },
+  % ---------- файл или данные ----------
+  artifact/.style={
+    cnode, draw=sig, fill=sig!8, text=sig!80!black,
+    rounded corners=1pt,
+  },
+  % ---------- инструмент, программа ----------
+  tool/.style={
+    cnode, draw=clk, fill=clk!8, text=clk!85!black,
+    rounded corners=4pt,
+  },
+  % ---------- микроконтроллер ----------
+  mcu/.style={
+    cnode, draw=acc, fill=acc!8, text=acc!80!black,
+    very thick, minimum height=12mm, minimum width=22mm,
+    rounded corners=1pt,
+  },
+  % ---------- периферия ----------
+  device/.style={
+    cnode, draw=ok, fill=ok!8, text=ok!80!black,
+  },
+  % ---------- компьютер, монитор ----------
+  host/.style={
+    cnode, draw=muted!90!black, fill=muted!12, text=muted!35!black,
+    rounded corners=1pt,
+  },
+  % ---------- память ----------
+  memory/.style={
+    cnode, draw=muted!90!black, fill=muted!10, text=muted!25!black,
+    minimum width=24mm, minimum height=7mm, font=\scriptsize,
+    rounded corners=0pt,
+  },
+  % ---------- подпись без рамки ----------
+  note/.style={
+    align=center, font=\scriptsize, text=muted!25!black, inner sep=1pt,
+  },
+  % ---------- предупреждение ----------
+  alert/.style={
+    cnode, draw=warn, fill=warn!8, text=warn!80!black, font=\small\bfseries,
+  },
+  % ---------- связи ----------
+  flow/.style={
+    -{Stealth[length=2.6mm,width=2mm]}, semithick, draw=muted!60!black,
+    rounded corners=3pt,
+  },
+  back/.style={
+    flow, densely dashed, draw=sig!75!black,
+  },
+  weak/.style={
+    flow, draw=muted, thin, densely dotted,
+  },
+  lab/.style={
+    font=\scriptsize, text=muted!30!black, inner sep=1.5pt,
+    fill=white, fill opacity=0.85, text opacity=1,
+  },
+  % подпись под стрелкой - для названия инструмента
+  sublab/.style={
+    lab, font=\scriptsize\itshape, text=clk!85!black,
+  },
+  % ---------- группировка этапов ----------
+  stage/.style={
+    draw=muted!45, semithick, densely dashed, rounded corners=3pt,
+    inner sep=3.2mm, fill=muted!5,
+  },
+  stagelab/.style={
+    font=\scriptsize\bfseries, text=muted!35!black,
+  },
+}
+
+% Значок микросхемы: выводы по обеим сторонам узла.
+% Использование:  \node[mcu] (u1) {ATmega328P};  \pins{u1}{4}
+\newcommand{\pins}[2]{%
+  \foreach \i in {1,...,#2} {
+    \draw[semithick, draw=acc!70]
+      ($(#1.north west)!{(\i-0.5)/#2}!(#1.south west)$) ++(0,0) --
+      ++(-1.6mm,0);
+    \draw[semithick, draw=acc!70]
+      ($(#1.north east)!{(\i-0.5)/#2}!(#1.south east)$) ++(0,0) --
+      ++(1.6mm,0);
+  }%
+}
+
+% Значок документа: загнутый угол у узла artifact.
+% Использование:  \node[artifact] (src) {main.cpp};  \dogear{src}
+\newcommand{\dogear}[1]{%
+  \begin{scope}
+    \draw[semithick, draw=sig, fill=sig!25]
+      ($(#1.north east)+(-2.8mm,0)$) -- ($(#1.north east)+(0,-2.8mm)$)
+      -- ($(#1.north east)+(-2.8mm,-2.8mm)$) -- cycle;
+  \end{scope}%
+}
+
+% Цифровая осциллограмма из списка уровней.
+% \wave[стиль]{x0}{y низкого уровня}{ширина такта}{высота}{список 0/1}
+% Пример: \wave[draw=sig]{0}{0}{0.6}{0.9}{0,1,1,0,1,0,0,1}
+\newcommand{\wave}[6][draw=sig]{%
+  \gdef\wprev{-1}%
+  \foreach \b [count=\i from 0] in {#6} {%
+    \pgfmathsetmacro{\wxa}{#2+\i*#4}%
+    \pgfmathsetmacro{\wxb}{#2+(\i+1)*#4}%
+    \pgfmathsetmacro{\wyy}{#3+\b*#5}%
+    \ifnum\wprev>-1
+      \pgfmathsetmacro{\wyp}{#3+\wprev*#5}%
+      \draw[#1, very thick] (\wxa,\wyp) -- (\wxa,\wyy);%
+    \fi
+    \draw[#1, very thick] (\wxa,\wyy) -- (\wxb,\wyy);%
+    \xdef\wprev{\b}%
+  }%
+}
+
+% Подписи тактов под осциллограммой.
+% \bitlabels{x0}{y}{ширина такта}{список подписей}
+\newcommand{\bitlabels}[4]{%
+  \foreach \t [count=\i from 0] in {#4} {%
+    \pgfmathsetmacro{\bx}{#1+(\i+0.5)*#3}%
+    \node[note, font=\scriptsize] at (\bx,#2) {\t};%
+  }%
+}
+
+% Размерная линия с подписью.
+% \dim{x1}{x2}{y}{подпись}
+\newcommand{\dimline}[4]{%
+  \draw[<->, draw=muted!70!black, semithick] (#1,#3) -- (#2,#3)
+    node[midway, above=0.3mm, note] {#4};%
+}

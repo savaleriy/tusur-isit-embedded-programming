@@ -29,6 +29,8 @@
 #####################
 *.doc
 *.docx
+# ...кроме шаблона оформления, он нужен для сборки конспекта
+!style.docx
 *.ppt
 *.ppt
 *.xlsx
@@ -36,3 +38,16 @@
 *.obsidian
 # trash
 *.trash
+
+# Сборка сайта #
+################
+site/
+docs/
+.venv/
+__pycache__/
+*.pyc
+
+# PlatformIO #
+##############
+.pio/
+.vscode/

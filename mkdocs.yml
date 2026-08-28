@@ -1,0 +1,215 @@
+site_name: Программирование микроконтроллеров
+site_description:
+  Материалы практических и лабораторных занятий по дисциплине
+  "Программирование микроконтроллеров". Arduino UNO R3, ATmega328P, FreeRTOS.
+site_author: Валерий Семенюк
+site_url: https://savaleriy.github.io/tusur-isit-embedded-programming/
+
+repo_url: https://github.com/savaleriy/tusur-isit-embedded-programming
+repo_name: savaleriy/tusur-isit-embedded-programming
+edit_uri: ""
+
+copyright: ТУСУР
+
+docs_dir: docs
+
+watch:
+  - Practice
+  - Labs
+  - Hardware
+  - Appendix
+  - Exam
+  - Students
+  - README.md
+  - tools
+  - hooks
+
+theme:
+  name: material
+  language: ru
+  icon:
+    repo: fontawesome/brands/github
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.indexes
+    - navigation.top
+    - navigation.tracking
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - search.share
+    - content.code.copy
+    - content.code.annotate
+    - content.tooltips
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: teal
+      accent: deep orange
+      toggle:
+        icon: material/brightness-7
+        name: Тёмная тема
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: teal
+      accent: deep orange
+      toggle:
+        icon: material/brightness-4
+        name: Светлая тема
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.details
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.caret
+  - pymdownx.mark
+  - pymdownx.tilde
+  - admonition
+  - attr_list
+  - md_in_html
+  - footnotes
+  - tables
+  # slugify из pymdownx сохраняет кириллицу в якорях - без него
+  # ссылки вида #3-способы-реализации не работают, а MkDocs ругается
+  - toc:
+      permalink: true
+      toc_depth: 3
+      slugify: !!python/object/apply:pymdownx.slugs.slugify {kwds: {case: lower}}
+
+plugins:
+  - search:
+      lang:
+        - ru
+        - en
+
+extra_css:
+  - stylesheets/extra.css
+
+hooks:
+  - hooks/sync_docs.py
+  - hooks/tikz.py
+  - hooks/copy_data.py
+  - hooks/mathjax.py
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/savaleriy
+      name: GitHub
+
+nav:
+  - Главная: index.md
+
+  - Модуль 1. Базовая Arduino:
+      - 1. Техника безопасности и электроника:
+          - Конспект: Practice/01-safety-electronics/note.md
+          - Задачи: Practice/01-safety-electronics/task.md
+      - 2. Инструменты разработки:
+          - Конспект: Practice/02-tooling/note.md
+          - Задачи: Practice/02-tooling/task.md
+      - 3. Цифровой ввод-вывод:
+          - Конспект: Practice/03-digital-io/note.md
+          - Задачи: Practice/03-digital-io/task.md
+      - 4. Широтно-импульсная модуляция:
+          - Конспект: Practice/04-pwm/note.md
+          - Задачи: Practice/04-pwm/task.md
+      - 5. АЦП и аналоговые датчики:
+          - Конспект: Practice/05-adc-sensors/note.md
+          - Задачи: Practice/05-adc-sensors/task.md
+      - 6. PlatformIO:
+          - Конспект: Practice/06-platformio/note.md
+          - Задачи: Practice/06-platformio/task.md
+      - 7. Время и многозадачность:
+          - Конспект: Practice/07-timing-multitasking/note.md
+          - Задачи: Practice/07-timing-multitasking/task.md
+      - 8. Прерывания:
+          - Конспект: Practice/08-interrupts/note.md
+          - Задачи: Practice/08-interrupts/task.md
+      - 9. Таймеры и счётчики:
+          - Конспект: Practice/09-timers/note.md
+          - Задачи: Practice/09-timers/task.md
+
+  - Модуль 2. Продвинутая Arduino:
+      - 10. Индикация:
+          - Конспект: Practice/10-indication/note.md
+          - Задачи: Practice/10-indication/task.md
+      - 11. C++ и ООП:
+          - Конспект: Practice/11-cpp-oop/note.md
+          - Задачи: Practice/11-cpp-oop/task.md
+      - 12. Шина I2C:
+          - Конспект: Practice/12-i2c-lcd-rtc/note.md
+          - Задачи: Practice/12-i2c-lcd-rtc/task.md
+      - 13. Шина SPI:
+          - Конспект: Practice/13-spi-tft-rfid/note.md
+          - Задачи: Practice/13-spi-tft-rfid/task.md
+      - 14. Звук и ИК-управление:
+          - Конспект: Practice/14-sound-ir/note.md
+          - Задачи: Practice/14-sound-ir/task.md
+      - 15. Приводы и коммутация:
+          - Конспект: Practice/15-actuators/note.md
+          - Задачи: Practice/15-actuators/task.md
+      - 16. UART и связь двух МК:
+          - Конспект: Practice/16-uart-link/note.md
+          - Задачи: Practice/16-uart-link/task.md
+      - 17. Память и энергопотребление:
+          - Конспект: Practice/17-memory/note.md
+          - Задачи: Practice/17-memory/task.md
+      - 18. Низкий уровень:
+          - Конспект: Practice/18-low-level/note.md
+          - Задачи: Practice/18-low-level/task.md
+
+  - Модуль 3. FreeRTOS:
+      - 19. Задачи и планировщик:
+          - Конспект: Practice/19-freertos-tasks/note.md
+          - Задачи: Practice/19-freertos-tasks/task.md
+      - 20. Синхронизация и обмен:
+          - Конспект: Practice/20-freertos-sync/note.md
+          - Задачи: Practice/20-freertos-sync/task.md
+      - 21. Прерывания и ресурсы:
+          - Конспект: Practice/21-freertos-isr/note.md
+          - Задачи: Practice/21-freertos-isr/task.md
+
+  - Лабораторные:
+      - Правила выполнения: Labs/README.md
+      - ЛР 1. Интерактивное устройство: Labs/lab1-snake/lab.md
+      - ЛР 2. Библиотека для датчика: Labs/lab2-sensor-library/lab.md
+      - ЛР 3. Система сбора данных: Labs/lab3-greenhouse/lab.md
+      - ЛР 4. FreeRTOS: Labs/lab4-freertos/lab.md
+
+  - Справочники:
+      - Железо курса: Hardware/README.md
+      - Язык C: Appendix/c.md
+      - Язык C++: Appendix/cpp.md
+      - ООП на C++:
+          - Обзор: Appendix/oop/README.md
+          - 1. Классы и объекты: Appendix/oop/01-classes.md
+          - 2. Наследование и композиция: Appendix/oop/02-inheritance.md
+          - 3. Отношения и полиморфизм: Appendix/oop/03-relations.md
+          - 4. Перегрузка: Appendix/oop/04-overloading.md
+          - 5. Шаблоны: Appendix/oop/05-templates.md
+          - 6. Множественное наследование: Appendix/oop/06-advanced-inheritance.md
+          - 7. Интерфейсные классы: Appendix/oop/07-interfaces.md
+      - Среды разработки: Appendix/tooling.md
+      - Датчики Wokwi: Appendix/wokwi-sensors.md
+
+  - Экзамен:
+      - Вопросы 2027: Exam/exam_2027.md
+      - Вопросы 2026: Exam/exam_2026.md
+
+  - Успеваемость:
+      - 2026/2027: Students/2026.md
+      - 2025/2026: Students/2025.md
